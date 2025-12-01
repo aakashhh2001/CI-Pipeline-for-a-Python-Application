@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: [3.9, 3,11]
+        python-version: [3.9, 3.11]
 
     runs-on: ${{ matrix.os }}
 
@@ -23,13 +23,13 @@ jobs:
       - name: Set-up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{matrix.python-version}}
+          python-version: ${{ matrix.python-version }}
 
       - name: Setup cache pip dependecies
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{runner.os}}-pip${{ hashFiles('requirements.txt') }}
+          key: ${{runner.os}}-pip-${{ hashFiles('requirements.txt') }}
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -42,5 +42,6 @@ jobs:
         with:
           name: test-results-${{ matrix.os }}-${{ matrix.python-version }}
           path: .
+
 
 
