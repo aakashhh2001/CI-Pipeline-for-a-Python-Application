@@ -29,7 +29,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{runner.os}}-pip${{hashFiles
+          key: ${{runner.os}}-pip${{ hashFiles('requirements.txt') }}
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -42,3 +42,4 @@ jobs:
         with:
           name: test-results-${{ matrix.os }}-${{ matrix.python-version }}
           path: .
+
