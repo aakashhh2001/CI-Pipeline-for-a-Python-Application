@@ -1,0 +1,44 @@
+name: CI for python
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: [3.9, 3,11]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: Set-up Python
+        uses: ctions/setup-python@v5
+        with:
+          python-version: ${{matrix.python-version}}
+
+      - name: Setup cache pip dependecies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{runner.os}}-pip${{hashFiles
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run test
+        run: pytest -q
+
+      - name: upload test result
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}-${{ matrix.python-version }}
+          path: .
